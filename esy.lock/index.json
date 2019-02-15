@@ -1,5 +1,5 @@
 {
-  "checksum": "76bfb2e1410acdf03fbb3688b392efa9",
+  "checksum": "f7160883c742c2e5531e119a5be5c050",
   "root": "ingtester@link:./package.json",
   "node": {
     "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#d488cd9321cd5036bd36ec96744ce78c5d45fc49@d41d8cd9": {
@@ -44,7 +44,8 @@
         "@opam/ppx_deriving_yojson@opam:3.3@80aab5d8",
         "@opam/pcre@opam:7.4.0@dd9ac4f3", "@opam/lwt@opam:4.1.0@111fc2bf",
         "@opam/lambda-term@opam:1.13@08871237",
-        "@opam/dune@opam:1.7.1@6f40bfee"
+        "@opam/dune@opam:1.7.1@6f40bfee",
+        "@opam/angstrom@opam:0.11.0@5a31b68d"
       ],
       "devDependencies": [
         "ocaml@4.6.10@d41d8cd9", "@opam/utop@opam:2.3.0@ac7267ea",
@@ -1471,6 +1472,32 @@
         "ocaml@4.6.10@d41d8cd9", "@opam/easy-format@opam:1.3.1@9abfd4ed"
       ]
     },
+    "@opam/bigstringaf@opam:0.4.0@b3f409bd": {
+      "id": "@opam/bigstringaf@opam:0.4.0@b3f409bd",
+      "name": "@opam/bigstringaf",
+      "version": "opam:0.4.0",
+      "source": {
+        "type": "install",
+        "source": [
+          "archive:https://opam.ocaml.org/cache/md5/d1/d1ff1ab40aad48627686f9b8c02d985a#md5:d1ff1ab40aad48627686f9b8c02d985a",
+          "archive:https://github.com/inhabitedtype/bigstringaf/releases/download/0.4.0/bigstringaf-0.4.0.tbz#md5:d1ff1ab40aad48627686f9b8c02d985a"
+        ],
+        "opam": {
+          "name": "bigstringaf",
+          "version": "0.4.0",
+          "path": "esy.lock/opam/bigstringaf.0.4.0"
+        }
+      },
+      "overrides": [],
+      "dependencies": [
+        "ocaml@4.6.10@d41d8cd9", "@opam/jbuilder@opam:transition@58bdfe0a",
+        "@opam/base-bigarray@opam:base@b03491b0",
+        "@esy-ocaml/substs@0.0.1@d41d8cd9"
+      ],
+      "devDependencies": [
+        "ocaml@4.6.10@d41d8cd9", "@opam/base-bigarray@opam:base@b03491b0"
+      ]
+    },
     "@opam/base-unix@opam:base@87d0b2eb": {
       "id": "@opam/base-unix@opam:base@87d0b2eb",
       "name": "@opam/base-unix",
@@ -1526,6 +1553,23 @@
       "devDependencies": [
         "ocaml@4.6.10@d41d8cd9", "@opam/ocamlfind@opam:1.8.0@96572762"
       ]
+    },
+    "@opam/base-bigarray@opam:base@b03491b0": {
+      "id": "@opam/base-bigarray@opam:base@b03491b0",
+      "name": "@opam/base-bigarray",
+      "version": "opam:base",
+      "source": {
+        "type": "install",
+        "source": [ "no-source:" ],
+        "opam": {
+          "name": "base-bigarray",
+          "version": "base",
+          "path": "esy.lock/opam/base-bigarray.base"
+        }
+      },
+      "overrides": [],
+      "dependencies": [ "@esy-ocaml/substs@0.0.1@d41d8cd9" ],
+      "devDependencies": []
     },
     "@opam/base@opam:v0.11.1@0e54024e": {
       "id": "@opam/base@opam:v0.11.1@0e54024e",
@@ -1584,6 +1628,34 @@
       ],
       "devDependencies": [
         "ocaml@4.6.10@d41d8cd9", "@opam/base-bytes@opam:base@19d0c2ff"
+      ]
+    },
+    "@opam/angstrom@opam:0.11.0@5a31b68d": {
+      "id": "@opam/angstrom@opam:0.11.0@5a31b68d",
+      "name": "@opam/angstrom",
+      "version": "opam:0.11.0",
+      "source": {
+        "type": "install",
+        "source": [
+          "archive:https://opam.ocaml.org/cache/md5/f2/f28ef135ecf1c7b5683d9d482528699a#md5:f28ef135ecf1c7b5683d9d482528699a",
+          "archive:https://github.com/inhabitedtype/angstrom/archive/0.11.0.tar.gz#md5:f28ef135ecf1c7b5683d9d482528699a"
+        ],
+        "opam": {
+          "name": "angstrom",
+          "version": "0.11.0",
+          "path": "esy.lock/opam/angstrom.0.11.0"
+        }
+      },
+      "overrides": [],
+      "dependencies": [
+        "ocaml@4.6.10@d41d8cd9", "@opam/result@opam:1.3@bee8bf2e",
+        "@opam/jbuilder@opam:transition@58bdfe0a",
+        "@opam/bigstringaf@opam:0.4.0@b3f409bd",
+        "@esy-ocaml/substs@0.0.1@d41d8cd9"
+      ],
+      "devDependencies": [
+        "ocaml@4.6.10@d41d8cd9", "@opam/result@opam:1.3@bee8bf2e",
+        "@opam/bigstringaf@opam:0.4.0@b3f409bd"
       ]
     },
     "@esy-ocaml/substs@0.0.1@d41d8cd9": {
