@@ -1,0 +1,35 @@
+{
+  "name": "ingtester",
+  "version": "0.1.0",
+  "description": "OCaml workflow with Esy",
+  "license": "MIT",
+  "esy": {
+    "build": "dune build -p #{self.name}",
+    "release": {
+      "bin": "ingtester",
+      "includePackages": [ "root", "@opam/camomile" ]
+    }
+  },
+  "scripts": {
+    "test": "esy x ingtester",
+    "utop": "esy dune utop src -- -implicit-bindings",
+    "format": "esy dune build @fmt --auto-promote"
+  },
+  "dependencies": {
+    "@opam/angstrom": "0.11.0",
+    "@opam/dune": "*",
+    "@opam/lambda-term": "*",
+    "@opam/lwt": "^4.0.0",
+    "@opam/pcre": "7.4.0",
+    "@opam/ppx_deriving_yojson": "3.3",
+    "@opam/yaml": "0.2.1",
+    "@opam/yojson": "1.5.0",
+    "ocaml": "~4.6.0"
+  },
+  "devDependencies": {
+    "@opam/merlin": "^3.0.3",
+    "ocaml": "~4.6.0",
+    "@opam/ocamlformat": "*",
+    "@opam/utop": "*"
+  }
+}

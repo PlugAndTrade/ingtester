@@ -1,0 +1,4 @@
+(executable
+ (name ingtester)
+ (public_name ingtester)
+ (libraries lib))

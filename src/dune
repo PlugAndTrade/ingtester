@@ -1,0 +1,6 @@
+(library
+ (name lib)
+ (public_name ingtester)
+ (libraries lambda-term lwt yojson ppx_deriving_yojson.runtime yaml yaml.unix)
+ (preprocess
+  (pps ppx_deriving_yojson)))
