@@ -4,11 +4,18 @@ end
 
 module Metadata = struct
   module Annotations = struct
-    type t = {use_regex: string [@key "nginx.ingress.kubernetes.io/use-regex"][@default "false"]} [@@deriving yojson { strict = false}]
+    type t =
+      { use_regex: string
+             [@key "nginx.ingress.kubernetes.io/use-regex"] [@default "false"]
+      }
+    [@@deriving yojson {strict= false}]
   end
 
-  type t = {name: string; namespace: string [@default "default"]; annotations: Annotations.t}
-  [@@deriving yojson { strict = false}]
+  type t =
+    { name: string
+    ; namespace: string [@default "default"]
+    ; annotations: Annotations.t }
+  [@@deriving yojson {strict= false}]
 end
 
 module Rule = struct
@@ -16,27 +23,39 @@ module Rule = struct
     module Backend = struct
       type t =
         { service_name: string [@key "serviceName"]
-        ; service_port: int [@key "servicePort"] }
-      [@@deriving yojson { strict = false}]
+        ; service_port: string [@key "servicePort"] }
+      [@@deriving yojson {strict= false}]
+
+      let pp t = Format.sprintf "%s:%s" t.service_name t.service_port
     end
 
     module Path = struct
-      type t = {path: string; backend: Backend.t} [@@deriving yojson { strict = false}]
+      type t = {path: string; backend: Backend.t}
+      [@@deriving yojson {strict= false}]
+
+      let pp t = Format.sprintf "%s -> %s" t.path (Backend.pp t.backend)
     end
 
     type t = {paths: Path.t list} [@@deriving yojson]
   end
 
-  type t = {host: string; http: HttpRule.t} [@@deriving yojson { strict = false}]
+  type t = {host: string; http: HttpRule.t} [@@deriving yojson {strict= false}]
 end
 
 module Spec = struct
-  type t = {rules: Rule.t list} [@@deriving yojson { strict = false}]
+  type t = {rules: Rule.t list} [@@deriving yojson {strict= false}]
 end
 
 type t =
-  {api_version: string [@key "apiVersion"]; kind: string; metadata: Metadata.t}
-[@@deriving yojson { strict = false}]
+  { api_version: string [@key "apiVersion"]
+  ; kind: string
+  ; metadata: Metadata.t
+  ; spec: Spec.t }
+[@@deriving yojson {strict= false}]
+
+module PP = struct
+  let path = Rule.HttpRule.Path.pp
+end
 
 let of_json_file f = f |> Yojson.Safe.from_file |> of_yojson
 
@@ -54,3 +73,10 @@ let of_yaml s =
 let of_yaml_file file =
   let yaml = Yaml_unix.of_file_exn (Fpath.v file) in
   yaml |> Conv.to_yojson |> of_yojson
+
+let pp t =
+  Format.sprintf "Ingress: %s in (%s)" t.metadata.name t.metadata.namespace
+
+let paths (t : t) =
+  let paths = List.map (fun (r : Rule.t) -> r.http.paths) t.spec.rules in
+  List.flatten paths

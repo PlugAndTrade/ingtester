@@ -5,6 +5,7 @@
   "license": "MIT",
   "esy": {
     "build": "dune build -p #{self.name}",
+    "buildsInSource": "_build",
     "release": {
       "bin": "ingtester",
       "includePackages": [ "root", "@opam/camomile" ]
@@ -16,7 +17,9 @@
     "format": "esy dune build @fmt --auto-promote"
   },
   "dependencies": {
+    "@opam/alcotest": "0.8.5",
     "@opam/angstrom": "0.11.0",
+    "@opam/cmdliner": "1.0.3",
     "@opam/dune": "*",
     "@opam/lambda-term": "*",
     "@opam/lwt": "^4.0.0",
