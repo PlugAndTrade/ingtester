@@ -9,7 +9,8 @@ module Metadata = struct
              [@key "nginx.ingress.kubernetes.io/use-regex"] [@default "false"]
       }
     [@@deriving yojson {strict= false}]
-    let make use_regex = {use_regex;}
+
+    let make use_regex = {use_regex}
   end
 
   type t =

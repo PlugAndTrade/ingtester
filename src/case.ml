@@ -86,32 +86,53 @@ module UnitTest = struct
 
   let to_test {ingress; assertions} =
     let paths = Ingress.paths ingress in
-    let tests = List.map
-      (fun ass ->
-        let maybe_path =
-          List.find_opt
-            (fun (p : Ingress.Rule.HttpRule.Path.t) ->
-              let loc = NginxLocation.make p.path in
-              NginxLocation.match_ (Assertion.unpack ass) loc )
-            paths
-        in
-        let actual, msg =
-          match maybe_path with
-          | Some path -> (true, Ingress.PP.path path)
-          | None -> (false, "No matches")
-        in
-        ( (Assertion.pp ass)
-        , `Quick
-        , fun () -> Alcotest.(check bool) msg (Assertion.to_bool ass) actual) )
-      assertions in
+    let tests =
+      List.map
+        (fun ass ->
+          let maybe_path =
+            List.find_opt
+              (fun (p : Ingress.Rule.HttpRule.Path.t) ->
+                let loc = NginxLocation.make p.path in
+                NginxLocation.match_ (Assertion.unpack ass) loc )
+              paths
+          in
+          let actual, msg =
+            match maybe_path with
+            | Some path -> (true, Ingress.PP.path path)
+            | None -> (false, "No matches")
+          in
+          ( Assertion.pp ass
+          , `Quick
+          , fun () -> Alcotest.(check bool) msg (Assertion.to_bool ass) actual
+          ) )
+        assertions
+    in
     (Ingress.pp ingress, tests)
 end
 
-let pp_filepath file = Format.sprintf "%s" file
-
-let run ~file =
+let make file =
   let open Lwt.Infix in
-  UnitTest.of_file file >|=
-  function
-  | Ok test -> Alcotest.run "Ingtester" [(UnitTest.to_test test)]
-  | Error e -> print_endline (Format.sprintf "Run failed %s" e)
+  UnitTest.of_file ~file
+  >|= function
+  | Ok test ->
+      Ok
+        (Format.sprintf "[INGTESTER] (ingress): %s" file, UnitTest.to_test test)
+  | Error e -> Error e
+
+let run file =
+  let open Lwt.Infix in
+  make file
+  >|= function
+  | Ok (msg, test) -> Alcotest.run msg [test]
+  | Error e -> print_endline (Format.sprintf "Run to run %s with %s" file e)
+
+let run_dir dir =
+  let open Lwt.Infix in
+  let make_from_file file =
+    make file >|= function Ok (_msg, t) -> t | Error e -> failwith e
+  in
+  let make_runner =
+    Alcotest.run (Format.sprintf "INGTESTER root-dir: %s" dir)
+  in
+  let files = Fs.dir_contents dir (Pcre.regexp "(.?)?ingress\\.(yml|yaml)") in
+  Lwt_list.map_s make_from_file files >|= make_runner
