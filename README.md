@@ -1,9 +1,37 @@
 # Ingtester
 
-[Esy]: https://github.com/esy-ocaml/esy
-[npm]: https://www.npmjs.com
+Doctests for kubernetes ingresses
 
 ## Usage
+
+Add asserts or refutes to an `*.ingress.yaml` file
+``` yaml
+# assert: /api/foo
+# assert: /api/foo/bar
+# refute: /api/v1/foo
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api-ingress
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /api/foo
+        backend:
+          serviceName: api
+          servicePort: 80
+---
+```
+
+Run: 
+
+``` bash
+ingtester test
+```
+
+##  Developing
 
 You need Esy, you can install the beta using [npm][]:
 
@@ -29,7 +57,7 @@ using:
 
 And test compiled executable:
 
-    % esy ./_build/default/bin/hello.exe
+    % esy ./_build/default/bin/ingtester.exe
 
 Shell into environment:
 

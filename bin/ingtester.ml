@@ -18,9 +18,7 @@ let default_cmd =
     ret (const (`Help (`Pager, None))))
   , Term.info "ingtester" ~version:"0.0" ~doc ~sdocs ~exits ~man )
 
-let run dir =
-  print_endline (Format.sprintf "GOT DIR %s" dir);
-  Lwt_main.run (Doctest.run_dir dir)
+let run dir = Lwt_main.run (Doctest.run_dir dir)
 
 let cmd =
   let dir =
