@@ -8,7 +8,9 @@
     "buildsInSource": "_build",
     "release": {
       "bin": "ingtester",
-      "includePackages": [ "root", "@opam/camomile" ]
+      "includePackages": [
+        "root"
+      ]
     }
   },
   "scripts": {
